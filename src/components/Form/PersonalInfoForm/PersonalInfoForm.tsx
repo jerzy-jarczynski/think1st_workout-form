@@ -1,5 +1,6 @@
 import React from 'react';
 import TextInput from './TextInput';
+import AgeSlider from './AgeSlider';
 import { useForm } from '../../../FormContext';
 
 const PersonalInfoForm = () => {
@@ -11,6 +12,7 @@ const PersonalInfoForm = () => {
       <TextInput header="First Name" type="text" value={firstName} onChange={setFirstName} />
       <TextInput header="Last Name" type="text" value={lastName} onChange={setLastName} />
       <TextInput header="Email Address" type="email" value={email} onChange={setEmail} />
+      <AgeSlider header="Age" />
     </>
   );
 };
