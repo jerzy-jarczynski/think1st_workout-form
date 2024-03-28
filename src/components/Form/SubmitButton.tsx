@@ -9,7 +9,7 @@ const SubmitButton: React.FC = () => {
   };
 
   return (
-    <button type="submit" onClick={handleClick}>
+    <button type="submit" onClick={handleClick} className="mt-8">
       Submit
     </button>
   );

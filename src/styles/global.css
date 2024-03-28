@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+}
+
+input,
+textarea,
+select,
+button {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+body {
+  background-color: #F0EAF8;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+  padding-bottom: 32px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 8px;
+}
+
+/* 
+Inter
+24px -- h2
+18px -- cta
+16px -- h3, textfield, calendar mo/y, calendar day, time
+14px -- textfield info, calendar dow, calendar description
+12px -- age slider
+*/
+
+/*
+500 -- h2, textfield text, slider display
+400 -- h3, textfield info
+*/

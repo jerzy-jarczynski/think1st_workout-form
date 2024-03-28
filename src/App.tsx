@@ -3,15 +3,16 @@ import PersonalInfoForm from './components/Form/PersonalInfoForm/PersonalInfoFor
 import WorkoutForm from './components/Form/WorkoutForm/WorkoutForm';
 import { FormProvider } from './FormContext';
 import SubmitButton from './components/Form/SubmitButton';
+import Container from './components/Form/Container';
 
 const App: React.FC = () => {
   return (
     <FormProvider>
-      <div className="App">
+      <Container>
         <PersonalInfoForm />
         <WorkoutForm />
         <SubmitButton />
-      </div>
+      </Container>
     </FormProvider>
   );
 };
