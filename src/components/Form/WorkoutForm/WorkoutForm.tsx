@@ -5,7 +5,7 @@ const WorkoutForm = () => {
 
   return (
     <>
-      <h2>Your workout</h2>
+      <h2 className="text-xl font-medium pb-8">Your workout</h2>
       <DateSelector />
     </>
   );

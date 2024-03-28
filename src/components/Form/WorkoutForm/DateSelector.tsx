@@ -129,7 +129,7 @@ const DateSelector: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      <h3>Date</h3>
+      <h3 className="text-base font-normal pb-2">Date</h3>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <div className="bg-gray-200 px-4 py-3 flex items-center justify-between">
           <button className="text-gray-600" onClick={goToPreviousMonth}>

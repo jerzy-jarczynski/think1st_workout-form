@@ -27,7 +27,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
 
   return (
     <div className="pb-6">
-      <h3>{header}</h3>
+      <h3 className="text-base font-normal pb-2">{header}</h3>
       <input
         type={type}
         value={value}

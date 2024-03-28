@@ -13,10 +13,10 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   useEffect(() => {
     if (rangeRef.current) {
       const rangeSliderWidth = rangeRef.current.offsetWidth - 16;
-      const rangeSliderStepCount = 100 - 8; // liczba kroków
-      const singleStepSize = rangeSliderWidth / rangeSliderStepCount; // długość jednego kroku w pikselach
-      const pixelOffset = (value - 8) * singleStepSize + 8; // Oblicz przesunięcie w pikselach
-      setTooltipPosition(pixelOffset); // Ustaw nową pozycję tooltipu
+      const rangeSliderStepCount = 100 - 8;
+      const singleStepSize = rangeSliderWidth / rangeSliderStepCount;
+      const pixelOffset = (value - 8) * singleStepSize + 8;
+      setTooltipPosition(pixelOffset);
     }
   }, [value]);
 
@@ -26,8 +26,8 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   };
 
   return (
-    <div className="pb-6 relative">
-      <h3>{header}</h3>
+    <div className="pb-20 relative">
+      <h3 className="text-base font-normal pb-2">{header}</h3>
       <div className="labels">
         <span className="label">8</span>
         <span className="label">100</span>

@@ -11,7 +11,7 @@ const TimeSelector: React.FC = () => {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-lg font-medium">Time</h3>
+      <h3 className="text-base font-normal pb-2">Time</h3>
       <div className="grid grid-cols-2 gap-2">
         {timeOptions.map((time) => (
           <label
