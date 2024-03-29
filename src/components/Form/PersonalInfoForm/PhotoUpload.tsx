@@ -33,7 +33,6 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ header }) => {
   }, []);
 
   const handleUploadClick = () => {
-    console.log('Clicked Upload a file - opening dialog window');
     if (fileInputRef.current) {
       fileInputRef.current.click();
       setInputState('active');
