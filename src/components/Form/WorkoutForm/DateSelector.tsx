@@ -51,28 +51,25 @@ const DateSelector: React.FC = () => {
   }, []);
 
   const isHoliday = (date: Date): boolean => {
-    return holidays.some((holiday) => {
-      const holidayDate = new Date(holiday.date);
-      return holidayDate.toDateString() === date.toDateString();
-    });
+    return holidays.some(
+      (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isNational = (date: Date): boolean => {
-    return holidays.some((holiday) => {
-      if (holiday.type === 'national_holiday') {
-        const nationalDate = new Date(holiday.date);
-        return nationalDate.toDateString() === date.toDateString();
-      }
-    });
+    return holidays.some(
+      (holiday) =>
+        holiday.type === 'national_holiday' &&
+        new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isObservance = (date: Date): boolean => {
-    return holidays.some((holiday) => {
-      if (holiday.type === 'observance') {
-        const observanceDate = new Date(holiday.date);
-        return observanceDate.toDateString() === date.toDateString();
-      }
-    });
+    return holidays.some(
+      (holiday) =>
+        holiday.type === 'observance' &&
+        new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isSunday = (date: Date): boolean => {
@@ -105,7 +102,6 @@ const DateSelector: React.FC = () => {
   const currentYear: number = currentDate.getFullYear();
 
   const daysInMonth: Date[] = getDaysInMonth(currentYear, currentMonth);
-
   const startDayOfWeek: number = new Date(
     currentYear,
     currentMonth,
@@ -113,8 +109,7 @@ const DateSelector: React.FC = () => {
   ).getDay();
 
   let blankDaysLength =
-    startDayOfWeek === 0 || startDayOfWeek === 7 ? 7 : startDayOfWeek - 1;
-
+    startDayOfWeek === 0 || startDayOfWeek === 7 ? 6 : startDayOfWeek - 1;
   const blankDays: JSX.Element[] = Array.from(
     { length: blankDaysLength },
     (_, index) => <div key={index} className="py-2 text-center"></div>
@@ -136,7 +131,6 @@ const DateSelector: React.FC = () => {
       setSelectedObservance((prevDescription) =>
         prevDescription === description ? null : description
       );
-
       setSelectedDay((prevSelectedDay) => {
         if (
           prevSelectedDay &&
@@ -149,7 +143,6 @@ const DateSelector: React.FC = () => {
           return day;
         }
       });
-
       setInputState('active');
     } else {
       setSelectedObservance(null);
@@ -161,115 +154,122 @@ const DateSelector: React.FC = () => {
 
   return (
     <>
-      <h3 className="text-base font-normal pb-2">Date</h3>
-      <div
-        className={`transition-colors ${
-          inputState === 'default'
-            ? 'border border-solid border-purple-300'
-            : inputState === 'active'
-            ? 'border border-solid border-purple-500'
-            : 'border border-solid border-red-500'
-        } bg-white shadow overflow-hidden sm:rounded-lg p-6 md:max-w-[326px]`}
-        ref={containerRef}
-      >
-        <div className="px-4 py-3 flex items-center justify-between">
-          <button
-            className="text-gray-600 cursor-pointer"
-            onClick={goToPreviousMonth}
+      <div className="md:flex">
+        {/* Calendar Column */}
+        <div
+          className={`md:w-11/12 ${
+            showTimeSelector ? 'md:w-16/24' : 'md:w-full'
+          }`}
+        >
+          <h3 className="text-base font-normal pb-2">Date</h3>
+          <div
+            className={`transition-colors ${
+              inputState === 'default'
+                ? 'border border-solid border-purple-300'
+                : inputState === 'active'
+                ? 'border border-solid border-purple-500'
+                : 'border border-solid border-red-500'
+            } bg-white shadow overflow-hidden sm:rounded-lg p-6 md:max-w-[326px]`}
+            ref={containerRef}
           >
-            <img src="/icons/calendar-left.svg" alt="Previous Month" />
-          </button>
-          <div className="text-gray-800 font-bold">
-            {currentDate.toLocaleString('default', { month: 'long' })}{' '}
-            {currentDate.getFullYear()}
+            <div className="px-4 py-3 flex items-center justify-between">
+              <button
+                className="text-gray-600 cursor-pointer"
+                onClick={goToPreviousMonth}
+              >
+                <img src="/icons/calendar-left.svg" alt="Previous Month" />
+              </button>
+              <div className="text-gray-800 font-bold">
+                {currentDate.toLocaleString('default', { month: 'long' })}{' '}
+                {currentDate.getFullYear()}
+              </div>
+              <button
+                className="text-gray-600 cursor-pointer"
+                onClick={goToNextMonth}
+              >
+                <img src="/icons/calendar-right.svg" alt="Previous Month" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-7">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
+                (day, index) => (
+                  <div
+                    key={index}
+                    className={`py-2 text-center font-medium ${
+                      index < 7 ? 'text-sm' : ''
+                    }`}
+                  >
+                    {day}
+                  </div>
+                )
+              )}
+
+              {blankDays}
+
+              {daysInMonth.map((day, index) => {
+                let backgroundColorClass = '';
+                let fontColorClass = '';
+
+                if (isHoliday(day)) {
+                  if (isNational(day)) {
+                    backgroundColorClass = 'bg-white';
+                    fontColorClass = 'text-neutral-400';
+                  } else if (isObservance(day)) {
+                    backgroundColorClass = 'bg-green-200';
+                    if (isSunday(day)) fontColorClass = 'text-neutral-400';
+                  }
+                } else if (isSunday(day)) {
+                  fontColorClass = 'text-neutral-400';
+                }
+
+                const holiday = holidays.find(
+                  (holiday) =>
+                    new Date(holiday.date).toDateString() === day.toDateString()
+                );
+                const description =
+                  holiday && holiday.type === 'observance'
+                    ? `It is Polish ${holiday.name}`
+                    : null;
+
+                const isDaySelected =
+                  selectedDay &&
+                  selectedDay.toDateString() === day.toDateString();
+                const isSelectedDayStyle = isDaySelected
+                  ? 'bg-purple-600 text-white'
+                  : '';
+
+                let classNames = `mx-auto text-center rounded-full w-8 h-8 flex items-center justify-center ${backgroundColorClass} ${fontColorClass} ${isSelectedDayStyle}`;
+                if (!(isSunday(day) || isNational(day))) {
+                  classNames += ' cursor-pointer';
+                }
+
+                return (
+                  <div
+                    key={index}
+                    className={classNames}
+                    onClick={() => handleClick(description, day)}
+                  >
+                    {day.getDate()}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <button
-            className="text-gray-600 cursor-pointer"
-            onClick={goToNextMonth}
-          >
-            <img src="/icons/calendar-right.svg" alt="Previous Month" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-7">
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
-            (day, index) => (
-              <div
-                key={index}
-                className={`py-2 text-center font-medium ${
-                  index < 7 ? 'text-sm' : ''
-                }`}
-              >
-                {day}
-              </div>
-            )
+          {selectedObservance && (
+            <div className="mt-1 text-gray-700 text-sm flex items-center">
+              <img src="/icons/info.svg" alt="Info" className="mr-1" />
+              {selectedObservance}
+            </div>
           )}
-
-          {new Array(
-            startDayOfWeek === 0 || startDayOfWeek === 7
-              ? 6
-              : startDayOfWeek - 1
-          )
-            .fill(null)
-            .map((_, index) => (
-              <div key={index} className="text-center"></div>
-            ))}
-
-          {daysInMonth.map((day, index) => {
-            let backgroundColorClass = '';
-            let fontColorClass = '';
-
-            if (isHoliday(day)) {
-              if (isNational(day)) {
-                backgroundColorClass = 'bg-white';
-                fontColorClass = 'text-neutral-400';
-              } else if (isObservance(day)) {
-                backgroundColorClass = 'bg-green-200';
-                if (isSunday(day)) fontColorClass = 'text-neutral-400';
-              }
-            } else if (isSunday(day)) {
-              fontColorClass = 'text-neutral-400';
-            }
-
-            const holiday = holidays.find(
-              (holiday) =>
-                new Date(holiday.date).toDateString() === day.toDateString()
-            );
-            const description =
-              holiday && holiday.type === 'observance'
-                ? `It is Polish ${holiday.name}`
-                : null;
-
-            const isDaySelected =
-              selectedDay && selectedDay.toDateString() === day.toDateString();
-            const isSelectedDayStyle = isDaySelected
-              ? 'bg-purple-600 text-white'
-              : '';
-
-            let classNames = `mx-auto text-center rounded-full w-8 h-8 flex items-center justify-center ${backgroundColorClass} ${fontColorClass} ${isSelectedDayStyle}`;
-            if (!(isSunday(day) || isNational(day))) {
-              classNames += ' cursor-pointer';
-            }
-
-            return (
-              <div
-                key={index}
-                className={classNames}
-                onClick={() => handleClick(description, day)}
-              >
-                {day.getDate()}
-              </div>
-            );
-          })}
         </div>
+        {/* TimeSelector Column */}
+        {showTimeSelector && (
+          <div className="md:w-8/24">
+            <TimeSelector />
+          </div>
+        )}
       </div>
-      {selectedObservance && (
-        <div className="mt-1 text-gray-700 text-sm flex items-center">
-          <img src="/icons/info.svg" alt="Info" className="mr-1" />
-          {selectedObservance}
-        </div>
-      )}
-      {showTimeSelector && <TimeSelector />}
     </>
   );
 };
