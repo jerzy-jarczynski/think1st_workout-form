@@ -9,7 +9,12 @@ const SubmitButton: React.FC = () => {
   };
 
   return (
-    <button type="submit" onClick={handleClick} className="mt-8">
+    <button
+      type="submit"
+      onClick={handleClick}
+      className="mt-8 md:mt-12 w-full h-12 text-lg font-medium rounded-md bg-purple-300 flex items-center justify-center"
+      style={{ color: '#FFFFFF' }}
+    >
       Submit
     </button>
   );
