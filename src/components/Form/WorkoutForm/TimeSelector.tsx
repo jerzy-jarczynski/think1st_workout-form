@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useForm } from '../../../FormContext';
 
 const TimeSelector: React.FC = () => {
   const [selectedTime, setSelectedTime] = useState<string>('');
+  const [, formActions] = useForm();
 
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
+    formActions.setSelectedTime(time);
   };
 
   const timeOptions: string[] = ['12:00', '14:00', '16:00', '18:00', '20:00'];
@@ -18,7 +21,7 @@ const TimeSelector: React.FC = () => {
             key={time}
             className={`inline-flex items-center justify-center w-full h-12 px-4 text-lg font-medium border border-gray-300 rounded-md cursor-pointer ${
               selectedTime === time
-                ? 'bg-white border-purple-500 transition duration-300' // Dodanie efektu przejścia
+                ? 'bg-white border-purple-500 transition duration-300'
                 : 'bg-white text-gray-700'
             }`}
           >

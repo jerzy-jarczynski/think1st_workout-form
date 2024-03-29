@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../../styles/AgeSlider.css';
+import { useForm } from '../../../FormContext'; // Importowanie hooka useForm
 
 interface AgeSliderProps {
   header: string;
@@ -9,6 +10,9 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   const [value, setValue] = useState<number>(8);
   const [tooltipPosition, setTooltipPosition] = useState<number>(0);
   const rangeRef = useRef<HTMLInputElement>(null);
+  
+  // Dodanie hooka useForm
+  const [, formActions] = useForm();
 
   useEffect(() => {
     if (rangeRef.current) {
@@ -17,11 +21,14 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
       const singleStepSize = rangeSliderWidth / rangeSliderStepCount;
       const pixelOffset = (value - 8) * singleStepSize + 8;
       setTooltipPosition(pixelOffset);
+      
+      // Aktualizacja wartości wieku na podstawie wartości z suwaka
+      formActions.setAge(value); // Ustawienie wieku w formActions
     }
-  }, [value]);
+  }, [value, formActions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value);
+    const newValue = parseInt(e.target.value, 10);
     setValue(newValue);
   };
 
@@ -38,7 +45,7 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
         min={8}
         max={100}
         step={1}
-        value={value}
+        value={value.toString()}
         className="range"
         onChange={handleInputChange}
       />

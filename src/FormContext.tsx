@@ -1,12 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Holiday } from './types';
 
 interface FormState {
   firstName: string;
   lastName: string;
   email: string;
   age: number;
-  selectedDay: Date | null; // Dodanie pola selectedDay do FormState
-  isDateSelected: boolean; // Dodanie pola isDateSelected do FormState
+  selectedDay: Date | null;
+  isDateSelected: boolean;
+  photo: string;
+  selectedTime: string | null;
 }
 
 interface FormActions {
@@ -15,7 +18,9 @@ interface FormActions {
   setEmail: (value: string) => void;
   setAge: (value: number) => void;
   handleSubmit: () => void;
-  setSelectedDay: (value: Date | null) => void; // Dodanie setSelectedDay do FormActions
+  setSelectedDay: (value: Date | null) => void;
+  setPhoto: (value: string) => void;
+  setSelectedTime: (value: string | null) => void;
 }
 
 const initialFormState: FormState = {
@@ -25,6 +30,8 @@ const initialFormState: FormState = {
   age: 0,
   selectedDay: null,
   isDateSelected: false,
+  photo: '',
+  selectedTime: null,
 };
 
 const FormContext = createContext<[FormState, FormActions]>([
@@ -47,13 +54,16 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setFormState((prevState) => ({ ...prevState, email: value }));
   const setAge = (value: number) =>
     setFormState((prevState) => ({ ...prevState, age: value }));
-
+  const setPhoto = (value: string) =>
+    setFormState((prevState) => ({ ...prevState, photo: value }));
   const setSelectedDay = (value: Date | null) =>
     setFormState((prevState) => ({
       ...prevState,
       selectedDay: value,
       isDateSelected: value !== null,
     }));
+  const setSelectedTime = (value: string | null) =>
+    setFormState((prevState) => ({ ...prevState, selectedTime: value }));
 
   const handleSubmit = () => {
     console.log('Form submitted:', formState);
@@ -66,7 +76,9 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setEmail,
     setAge,
     handleSubmit,
-    setSelectedDay, // Dodanie setSelectedDay do formActions
+    setSelectedDay,
+    setPhoto,
+    setSelectedTime,
   };
 
   return (

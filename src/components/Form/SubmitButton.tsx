@@ -1,51 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from '../../FormContext';
 
 const SubmitButton: React.FC = () => {
   const [formState] = useForm();
   const [buttonStyle, setButtonStyle] = useState({
-    backgroundColor: '#CBB6E5',
-    cursor: 'default',
+    backgroundColor: formState.isDateSelected ? '#761BE4' : '#CBB6E5',
+    cursor: formState.isDateSelected ? 'pointer' : 'default',
+    transition: 'background-color 0.3s',
   });
-
-  useEffect(() => {
-    if (formState.isDateSelected) {
-      setButtonStyle({
-        backgroundColor: '#761BE4',
-        cursor: 'pointer',
-      });
-    } else {
-      setButtonStyle({
-        backgroundColor: '#CBB6E5',
-        cursor: 'default',
-      });
-    }
-  }, [formState.isDateSelected]);
 
   const handleHover = () => {
     if (formState.isDateSelected) {
-      setButtonStyle({
-        ...buttonStyle,
-        backgroundColor: '#6A19CD',
-      });
+      setButtonStyle(prevStyle => ({ ...prevStyle, backgroundColor: '#6A19CD', cursor: 'pointer' }));
     }
   };
 
   const handleHoverExit = () => {
     if (formState.isDateSelected) {
-      setButtonStyle({
-        ...buttonStyle,
-        backgroundColor: '#761BE4',
+      setButtonStyle(prevStyle => ({ ...prevStyle, backgroundColor: '#761BE4', cursor: 'pointer' }));
+    }
+  };
+
+  const handleSubmit = () => {
+    if (formState.isDateSelected) {
+      console.log('Submitting form data:', {
+        firstName: formState.firstName,
+        lastName: formState.lastName,
+        email: formState.email,
+        age: formState.age,
+        photo: formState.photo,
+        date: formState.selectedDay,
+        time: formState.selectedTime,
       });
+  
+      // Wysyłanie danych na serwer...
+      const formData = new FormData();
+      formData.append('firstName', formState.firstName);
+      formData.append('lastName', formState.lastName);
+      formData.append('email', formState.email);
+      formData.append('age', formState.age.toString());
+      formData.append('photo', formState.photo);
+      formData.append('date', formState.selectedDay?.toISOString() || '');
+  
+      // Dodawanie selectedTime tylko jeśli nie jest null
+      if (formState.selectedTime !== null) {
+        formData.append('time', formState.selectedTime);
+      }
+  
+      fetch('http://letsworkout.pl/submit', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log('Form data successfully submitted to the server.');
+          // Tutaj możesz dodać kod obsługujący odpowiedź z serwera
+        })
+        .catch(error => {
+          console.error('There was a problem with your fetch operation:', error);
+        });
     }
   };
 
   return (
     <button
       type="submit"
-      disabled={!formState.isDateSelected} // Wyłącz przycisk, gdy data nie jest zaznaczona
-      className="mt-8 w-full h-12 text-lg font-medium rounded-md text-white"
+      disabled={!formState.isDateSelected}
+      className="mt-8 w-full h-12 text-lg font-medium rounded-md text-white transition-all duration-300"
       style={buttonStyle}
+      onClick={handleSubmit}
       onMouseEnter={handleHover}
       onMouseLeave={handleHoverExit}
     >
