@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/think1st-workout-form/static/css/main.1dfdd719.css",
+    "main.js": "/think1st-workout-form/static/js/main.d9d1a87e.js",
+    "index.html": "/think1st-workout-form/index.html",
+    "main.1dfdd719.css.map": "/think1st-workout-form/static/css/main.1dfdd719.css.map",
+    "main.d9d1a87e.js.map": "/think1st-workout-form/static/js/main.d9d1a87e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1dfdd719.css",
+    "static/js/main.d9d1a87e.js"
+  ]
+}
