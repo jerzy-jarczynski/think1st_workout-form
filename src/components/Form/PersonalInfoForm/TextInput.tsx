@@ -16,7 +16,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   const activeClasses =
     'w-full h-12 px-4 rounded-md border-2 border-solid border-purple-500 text-base font-semibold text-black bg-white transition-all duration-300 focus:outline-none focus:ring-0 focus:border-purple-500';
   const errorClasses =
-    'w-full h-12 px-4 rounded-md border-2 border-solid border-red-500 text-base font-semibold text-black bg-white transition-all duration-300 focus:outline-none focus:ring-0 focus:border-red-500';
+    'w-full h-12 px-4 rounded-md border-2 border-solid border-red-500 text-base font-semibold text-black bg-red-100 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-red-500'; // Zmieniono kolor tła na czerwony dla stanu error
 
   let inputClasses = defaultClasses;
   if (state === 'active') {
@@ -26,8 +26,8 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   }
 
   return (
-    <div className="pb-6">
-      <h3 className="text-base font-normal pb-2">{header}</h3>
+    <div>
+      <h3 className="text-base font-normal pb-2 pt-6">{header}</h3>
       <input
         type={type}
         value={value}

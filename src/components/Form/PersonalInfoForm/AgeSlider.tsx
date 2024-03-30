@@ -8,7 +8,7 @@ interface AgeSliderProps {
 
 const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   const [value, setValue] = useState<number>(8);
-  const [tooltipPosition, setTooltipPosition] = useState<number>(0);
+  const [tooltipPosition, setTooltipPosition] = useState<number>(8); // Ustawienie pozycji początkowej na 8px
   const [prevValue, setPrevValue] = useState<number>(8); // New state variable to store previous value
   const rangeRef = useRef<HTMLInputElement>(null);
   
@@ -35,7 +35,7 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   };
 
   return (
-    <div className="pb-20 relative">
+    <div className="pt-6 pb-20 relative">
       <h3 className="text-base font-normal pb-2">{header}</h3>
       <div className="labels">
         <span className="label">8</span>

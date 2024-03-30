@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from '../../FormContext';
 
 const SubmitButton: React.FC = () => {
-  const [formState] = useForm();
+  const [formState, formActions] = useForm(); // Zmieniono destrukturyzację aby otrzymać zarówno stan, jak i akcje z kontekstu
   const [buttonStyle, setButtonStyle] = useState({
     backgroundColor: formState.isDateSelected ? '#761BE4' : '#CBB6E5',
     cursor: formState.isDateSelected ? 'pointer' : 'default',
     transition: 'background-color 0.3s',
   });
 
-  // Aktualizacja stylu przycisku w zależności od zmiany stanu zaznaczenia daty
   useEffect(() => {
     setButtonStyle({
       backgroundColor: formState.isDateSelected ? '#761BE4' : '#CBB6E5',
@@ -31,7 +30,16 @@ const SubmitButton: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    if (formState.isDateSelected) {
+    // Sprawdź, czy wszystkie wymagane pola są wypełnione
+    const isFormValid =
+      formState.firstName.trim() !== '' &&
+      formState.lastName.trim() !== '' &&
+      formState.email.trim() !== '' &&
+      formState.photo.trim() !== '' &&
+      formState.isDateSelected &&
+      isValidEmail(formState.email); // Dodatkowa walidacja formatu email
+
+    if (isFormValid) {
       console.log('Submitting form data:', {
         firstName: formState.firstName,
         lastName: formState.lastName,
@@ -42,7 +50,6 @@ const SubmitButton: React.FC = () => {
         selectedTime: formState.selectedTime,
       });
 
-      // Wysyłanie danych na serwer...
       const formData = new FormData();
       formData.append('firstName', formState.firstName);
       formData.append('lastName', formState.lastName);
@@ -51,7 +58,6 @@ const SubmitButton: React.FC = () => {
       formData.append('photo', formState.photo);
       formData.append('selectedDay', formState.selectedDay?.toISOString() || '');
 
-      // Dodawanie selectedTime tylko jeśli nie jest null
       if (formState.selectedTime !== null) {
         formData.append('selectedTime', formState.selectedTime);
       }
@@ -65,12 +71,20 @@ const SubmitButton: React.FC = () => {
             throw new Error('Network response was not ok');
           }
           console.log('Form data successfully submitted to the server.');
-          // Tutaj możesz dodać kod obsługujący odpowiedź z serwera
         })
         .catch(error => {
           console.error('There was a problem with your fetch operation:', error);
         });
+    } else {
+      // Ustawiamy flagę informującą PersonalInfoForm o próbie wysłania pustego formularza
+      formActions.setFormSubmitted(true); // Użyjemy funkcji setFormSubmitted z kontekstu
     }
+  };
+
+  // Funkcja sprawdzająca poprawność formatu adresu email
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (

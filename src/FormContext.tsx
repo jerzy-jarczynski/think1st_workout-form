@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Holiday } from './types';
 
 interface FormState {
   firstName: string;
@@ -10,6 +9,7 @@ interface FormState {
   isDateSelected: boolean;
   photo: string;
   selectedTime: string | null;
+  formSubmitted: boolean;
 }
 
 interface FormActions {
@@ -21,6 +21,7 @@ interface FormActions {
   setSelectedDay: (value: Date | null) => void;
   setPhoto: (value: string) => void;
   setSelectedTime: (value: string | null) => void;
+  setFormSubmitted: (value: boolean) => void;
 }
 
 const initialFormState: FormState = {
@@ -32,12 +33,12 @@ const initialFormState: FormState = {
   isDateSelected: false,
   photo: '',
   selectedTime: null,
+  formSubmitted: false,
 };
 
-export const FormContext = createContext<[FormState, FormActions, boolean]>([
+export const FormContext = createContext<[FormState, FormActions]>([
   initialFormState,
   {} as FormActions,
-  false,
 ]);
 
 export const useForm = () => useContext(FormContext);
@@ -57,7 +58,9 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setFormState((prevState) => ({ ...prevState, age: value }));
   const setPhoto = (value: string) =>
     setFormState((prevState) => ({ ...prevState, photo: value }));
-  
+  const setFormSubmitted = (value: boolean) =>
+    setFormState((prevState) => ({ ...prevState, formSubmitted: value }));
+
   const updateSelectedDay = (value: Date | null) => {
     setFormState((prevState) => ({
       ...prevState,
@@ -76,8 +79,20 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setFormState((prevState) => ({ ...prevState, selectedTime: value }));
 
   const handleSubmit = () => {
-    console.log('Form submitted:', formState);
-    setFormState(initialFormState);
+    setFormSubmitted(true);
+
+    const isFormValid =
+      formState.firstName.trim() !== '' &&
+      formState.lastName.trim() !== '' &&
+      formState.email.trim() !== '' &&
+      formState.photo.trim() !== '' &&
+      formState.isDateSelected;
+
+    if (isFormValid) {
+      console.log('Submitting form data:', formState);
+
+      // Wysyłanie danych na serwer...
+    }
   };
 
   const formActions: FormActions = {
@@ -89,10 +104,11 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setSelectedDay: updateSelectedDay,
     setPhoto,
     setSelectedTime,
+    setFormSubmitted,
   };
 
   return (
-    <FormContext.Provider value={[formState, formActions, formState.isDateSelected]}>
+    <FormContext.Provider value={[formState, formActions]}>
       {children}
     </FormContext.Provider>
   );

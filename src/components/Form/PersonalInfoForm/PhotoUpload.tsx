@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useForm } from '../../../FormContext';
 
-interface PhotoUploadProps {
+export interface PhotoUploadProps {
   header: string;
+  state: 'default' | 'error'; // Dodaj prop state do interfejsu PhotoUploadProps
 }
 
-const PhotoUpload: React.FC<PhotoUploadProps> = ({ header }) => {
+const PhotoUpload: React.FC<PhotoUploadProps> = ({ header, state }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [fileName, setFileName] = useState<string>('');
-  const [inputState, setInputState] = useState<'default' | 'active' | 'error'>('default');
+  const [inputState, setInputState] = useState<'default' | 'active'>('default');
   const [, formActions] = useForm();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,13 +61,13 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ header }) => {
       <h3 className="text-base font-normal mb-2">{header}</h3>
       <div
         className={`transition-colors ${
-          inputState === 'default'
-            ? 'border-purple-300'
-            : inputState === 'active'
-            ? 'border-purple-500'
+          state === 'default'
+            ? inputState === 'default'
+              ? 'border-purple-300'
+              : 'border-purple-500'
             : 'border-red-500'
         } file-upload-container flex items-center justify-center w-full border rounded-md p-4 relative bg-white`}
-        style={{ height: '96px' }}
+        style={{ height: '96px', backgroundColor: state === 'error' ? '#FEECEC' : '' }}
         ref={containerRef}
       >
         <input
@@ -90,11 +91,6 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ header }) => {
                 src="/icons/cancel-button.svg"
                 alt="Cancel"
                 className="w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-100 transition-opacity duration-300 hover:opacity-0"
-              />
-              <img
-                src="/icons/cancel-button__hover.svg"
-                alt="Cancel Hover"
-                className="w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300 hover:opacity-100"
               />
             </button>
           </div>
