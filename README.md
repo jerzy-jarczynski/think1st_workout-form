@@ -1,46 +1,63 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Workout Form
 
-## Available Scripts
+This is a React project aimed at creating a Workout Form application. The application allows users to sign up for training sessions by filling out a form. It consists of two main parts: Personal Info Form and Workout Form. The Personal Info Form collects basic personal information such as first name, last name, email address, age, and allows users to upload a photo. The Workout Form includes a calendar where users can select a date, upon which a time selector appears. 
 
-In the project directory, you can run:
+![Grafical User Interface](https://i.postimg.cc/JnRHPPp8/workout-form.png)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Demo
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+A live demo of the project is available [here](https://b29ed93e-7ff3-49dd-9534-9a6197bb7750-00-3nel7kpvi4r7d.spock.replit.dev/). 
 
-### `npm test`
+## Dependencies 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The project utilizes the following packages: 
+-  **React** - JavaScript library for building user interfaces. 
+-  **TypeScript** - Typed superset of JavaScript that compiles to plain JavaScript. 
+-  **Tailwind CSS** - Utility-first CSS framework for building custom designs.
 
-### `npm run build`
+## Instalation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To download the repository, execute the following command:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+git clone [git@github.com](mailto:git@github.com):jerzy-jarczynski/think1st_workout-form.git
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Next, navigate into the downloaded project directory and install dependencies by running:
 
-### `npm run eject`
+```
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Please ensure that Node.js and npm (or yarn) are installed on your system before proceeding. To run the project on `localhost:3000`, execute the start script with the following command:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+npm run start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This will start the development server, and you can view the project in your web browser at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Please make sure to update tests as appropriate.
+
+## License
+
+[](https://github.com/jerzy-jarczynski/final_jewelry_shop#license)
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Issues
+
+At this point, I haven't been able to find any errors or issues with the application and form functionality, except for minor frontend imperfections (pixel perfect). The application lacks grandeur (special effects), but it was created with attention to detail.
+
+It's worth noting that no ready-made component libraries were used in the code, which significantly extended the development and debugging process. The code is quite chaotic. It was created in haste and with considerable assistance from ChatGPT 3.5. Nonetheless, I am satisfied with the final result.
+
+> Note: A correctly filled out form sends data to the specified endpoint in the recruitment task, which is fictional, but I haven't added any success message other than console.log.
+
+To see the effect of the submitted form, press F12 in your browser, navigate to the console, and then click "Send application."
