@@ -10,7 +10,9 @@ interface DateSelectorProps {
   showTimeSelector: boolean;
   setShowTimeSelector: React.Dispatch<React.SetStateAction<boolean>>;
   inputState: 'default' | 'active' | 'error';
-  setInputState: React.Dispatch<React.SetStateAction<'default' | 'active' | 'error'>>;
+  setInputState: React.Dispatch<
+    React.SetStateAction<'default' | 'active' | 'error'>
+  >;
   selectedObservance: string | null;
   setSelectedObservance: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -23,7 +25,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   inputState,
   setInputState,
   selectedObservance,
-  setSelectedObservance
+  setSelectedObservance,
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
@@ -49,7 +51,10 @@ const DateSelector: React.FC<DateSelectorProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setInputState('default');
       }
     };
@@ -62,15 +67,25 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   }, [setInputState]);
 
   const isHoliday = (date: Date): boolean => {
-    return holidays.some((holiday) => new Date(holiday.date).toDateString() === date.toDateString());
+    return holidays.some(
+      (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isNational = (date: Date): boolean => {
-    return holidays.some((holiday) => holiday.type === 'national_holiday' && new Date(holiday.date).toDateString() === date.toDateString());
+    return holidays.some(
+      (holiday) =>
+        holiday.type === 'national_holiday' &&
+        new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isObservance = (date: Date): boolean => {
-    return holidays.some((holiday) => holiday.type === 'observance' && new Date(holiday.date).toDateString() === date.toDateString());
+    return holidays.some(
+      (holiday) =>
+        holiday.type === 'observance' &&
+        new Date(holiday.date).toDateString() === date.toDateString()
+    );
   };
 
   const isSunday = (date: Date): boolean => {
@@ -88,21 +103,33 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   };
 
   const goToPreviousMonth = () => {
-    setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1));
+    setCurrentDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1)
+    );
   };
 
   const goToNextMonth = () => {
-    setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1));
+    setCurrentDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1)
+    );
   };
 
   const currentMonth: number = currentDate.getMonth();
   const currentYear: number = currentDate.getFullYear();
 
   const daysInMonth: Date[] = getDaysInMonth(currentYear, currentMonth);
-  const startDayOfWeek: number = new Date(currentYear, currentMonth, 1).getDay();
+  const startDayOfWeek: number = new Date(
+    currentYear,
+    currentMonth,
+    1
+  ).getDay();
 
-  let blankDaysLength = startDayOfWeek === 0 || startDayOfWeek === 7 ? 6 : startDayOfWeek - 1;
-  const blankDays: JSX.Element[] = Array.from({ length: blankDaysLength }, (_, index) => <div key={index} className="py-2 text-center"></div>);
+  let blankDaysLength =
+    startDayOfWeek === 0 || startDayOfWeek === 7 ? 6 : startDayOfWeek - 1;
+  const blankDays: JSX.Element[] = Array.from(
+    { length: blankDaysLength },
+    (_, index) => <div key={index} className="py-2 text-center"></div>
+  );
 
   if (startDayOfWeek === 0 || startDayOfWeek === 7) {
     for (let i = blankDaysLength; i < 7; i++) {
@@ -118,9 +145,14 @@ const DateSelector: React.FC<DateSelectorProps> = ({
       setInputState('active');
       formActions.setSelectedDay(null);
     } else if (!isSunday(day) && !isNational(day)) {
-      setSelectedObservance((prevDescription) => prevDescription === description ? null : description);
+      setSelectedObservance((prevDescription) =>
+        prevDescription === description ? null : description
+      );
       setSelectedDay((prevSelectedDay) => {
-        if (prevSelectedDay && prevSelectedDay.toDateString() === day.toDateString()) {
+        if (
+          prevSelectedDay &&
+          prevSelectedDay.toDateString() === day.toDateString()
+        ) {
           setShowTimeSelector(false);
           setInputState('default');
           formActions.setSelectedDay(null);
@@ -144,28 +176,54 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   return (
     <>
       <div className="md:flex">
-        {/* Calendar Column */}
-        <div className={`md:w-11/12 ${showTimeSelector ? 'md:w-16/24' : 'md:w-full'}`}>
+        <div
+          className={`md:w-11/12 ${
+            showTimeSelector ? 'md:w-16/24' : 'md:w-full'
+          }`}
+        >
           <h3 className="text-base font-normal pb-2">Date</h3>
-          <div className={`transition-colors ${inputState === 'default' ? 'border border-solid border-purple-300' : inputState === 'active' ? 'border border-solid border-purple-500' : 'border border-solid border-red-500'} bg-white shadow overflow-hidden sm:rounded-lg p-6 md:max-w-[326px]`} ref={containerRef}>
+          <div
+            className={`transition-colors ${
+              inputState === 'default'
+                ? 'border border-solid border-purple-300'
+                : inputState === 'active'
+                ? 'border border-solid border-purple-500'
+                : 'border border-solid border-red-500'
+            } bg-white shadow overflow-hidden sm:rounded-lg p-6 md:max-w-[326px]`}
+            ref={containerRef}
+          >
             <div className="px-4 py-3 flex items-center justify-between">
-              <button className="text-gray-600 cursor-pointer" onClick={goToPreviousMonth}>
+              <button
+                className="text-gray-600 cursor-pointer"
+                onClick={goToPreviousMonth}
+              >
                 <img src="/icons/calendar-left.svg" alt="Previous Month" />
               </button>
               <div className="text-gray-800 font-bold">
-                {currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}
+                {currentDate.toLocaleString('default', { month: 'long' })}{' '}
+                {currentDate.getFullYear()}
               </div>
-              <button className="text-gray-600 cursor-pointer" onClick={goToNextMonth}>
+              <button
+                className="text-gray-600 cursor-pointer"
+                onClick={goToNextMonth}
+              >
                 <img src="/icons/calendar-right.svg" alt="Previous Month" />
               </button>
             </div>
 
             <div className="grid grid-cols-7">
-              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
-                <div key={index} className={`py-2 text-center font-medium ${index < 7 ? 'text-sm' : ''}`}>
-                  {day}
-                </div>
-              ))}
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
+                (day, index) => (
+                  <div
+                    key={index}
+                    className={`py-2 text-center font-medium ${
+                      index < 7 ? 'text-sm' : ''
+                    }`}
+                  >
+                    {day}
+                  </div>
+                )
+              )}
 
               {blankDays}
 
@@ -185,11 +243,21 @@ const DateSelector: React.FC<DateSelectorProps> = ({
                   fontColorClass = 'text-neutral-400';
                 }
 
-                const holiday = holidays.find((holiday) => new Date(holiday.date).toDateString() === day.toDateString());
-                const description = holiday && holiday.type === 'observance' ? `It is Polish ${holiday.name}` : null;
+                const holiday = holidays.find(
+                  (holiday) =>
+                    new Date(holiday.date).toDateString() === day.toDateString()
+                );
+                const description =
+                  holiday && holiday.type === 'observance'
+                    ? `It is Polish ${holiday.name}`
+                    : null;
 
-                const isDaySelected = selectedDay && selectedDay.toDateString() === day.toDateString();
-                const isSelectedDayStyle = isDaySelected ? 'bg-purple-600 text-white' : '';
+                const isDaySelected =
+                  selectedDay &&
+                  selectedDay.toDateString() === day.toDateString();
+                const isSelectedDayStyle = isDaySelected
+                  ? 'bg-purple-600 text-white'
+                  : '';
 
                 let classNames = `mx-auto text-center rounded-full w-8 h-8 flex items-center justify-center ${backgroundColorClass} ${fontColorClass} ${isSelectedDayStyle}`;
                 if (!(isSunday(day) || isNational(day))) {
@@ -197,7 +265,11 @@ const DateSelector: React.FC<DateSelectorProps> = ({
                 }
 
                 return (
-                  <div key={index} className={classNames} onClick={() => handleClick(description, day)}>
+                  <div
+                    key={index}
+                    className={classNames}
+                    onClick={() => handleClick(description, day)}
+                  >
                     {day.getDate()}
                   </div>
                 );
@@ -211,7 +283,6 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             </div>
           )}
         </div>
-        {/* TimeSelector Column */}
         {showTimeSelector && (
           <div className="md:w-8/24">
             <TimeSelector />

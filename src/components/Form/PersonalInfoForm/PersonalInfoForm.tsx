@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TextInput from './TextInput';
 import AgeSlider from './AgeSlider';
-import PhotoUpload, { PhotoUploadProps } from './PhotoUpload'; // Importuj PhotoUploadProps z komponentu PhotoUpload
+import PhotoUpload, { PhotoUploadProps } from './PhotoUpload';
 import { useForm } from '../../../FormContext';
 
 const PersonalInfoForm = () => {
@@ -13,7 +13,7 @@ const PersonalInfoForm = () => {
   const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [photoError, setPhotoError] = useState('');
-  const [attemptedSubmit, setAttemptedSubmit] = useState(false); // Dodajemy stan informujący o próbie wysłania pustego formularza
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   useEffect(() => {
     if (formSubmitted && !firstName.trim()) {
@@ -31,7 +31,6 @@ const PersonalInfoForm = () => {
     if (formSubmitted && !email.trim()) {
       setEmailError('Email Address is required');
     } else if (formSubmitted && !isValidEmail(email)) {
-      // Dodatkowa walidacja formatu email
       setEmailError('Please use correct formatting.');
     } else {
       setEmailError('');
@@ -47,11 +46,10 @@ const PersonalInfoForm = () => {
   useEffect(() => {
     if (attemptedSubmit) {
       console.log('Please fill in all required fields.');
-      setAttemptedSubmit(false); // Resetujemy flagę po wyświetleniu komunikatu
+      setAttemptedSubmit(false);
     }
   }, [attemptedSubmit]);
 
-  // Funkcja sprawdzająca poprawność formatu adresu email
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -111,7 +109,7 @@ const PersonalInfoForm = () => {
           formSubmitted && (emailError || !isValidEmail(email))
             ? 'error'
             : 'default'
-        } // Dodatkowa walidacja formatu email
+        }
       />
       {formSubmitted && (emailError || !isValidEmail(email)) && (
         <div className="flex items-center">
@@ -133,7 +131,7 @@ const PersonalInfoForm = () => {
       <AgeSlider header="Age" />
       <PhotoUpload
         header="Photo"
-        state={formSubmitted && photoError ? 'error' : 'default'} // Sprawdź, czy wystąpił błąd w polu zdjęcia
+        state={formSubmitted && photoError ? 'error' : 'default'}
       />
       {formSubmitted && photoError && (
         <div className="flex items-center">

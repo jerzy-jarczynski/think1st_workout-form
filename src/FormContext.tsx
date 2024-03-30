@@ -90,8 +90,6 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
 
     if (isFormValid) {
       console.log('Submitting form data:', formState);
-
-      // Wysyłanie danych na serwer...
     }
   };
 

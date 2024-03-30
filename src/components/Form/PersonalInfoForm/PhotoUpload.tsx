@@ -3,7 +3,7 @@ import { useForm } from '../../../FormContext';
 
 export interface PhotoUploadProps {
   header: string;
-  state: 'default' | 'error'; // Dodaj prop state do interfejsu PhotoUploadProps
+  state: 'default' | 'error';
 }
 
 const PhotoUpload: React.FC<PhotoUploadProps> = ({ header, state }) => {
@@ -28,7 +28,10 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ header, state }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setInputState('default');
       }
     };
@@ -67,7 +70,10 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ header, state }) => {
               : 'border-purple-500'
             : 'border-red-500'
         } file-upload-container flex items-center justify-center w-full border rounded-md p-4 relative bg-white`}
-        style={{ height: '96px', backgroundColor: state === 'error' ? '#FEECEC' : '' }}
+        style={{
+          height: '96px',
+          backgroundColor: state === 'error' ? '#FEECEC' : '',
+        }}
         ref={containerRef}
       >
         <input

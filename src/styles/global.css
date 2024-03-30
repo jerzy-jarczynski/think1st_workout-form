@@ -29,19 +29,5 @@ button {
 }
 
 body {
-  background-color: #F0EAF8;
+  background-color: #f0eaf8;
 }
-
-/* 
-Inter
-24px -- h2
-18px -- cta
-16px -- h3, textfield, calendar mo/y, calendar day, time
-14px -- textfield info, calendar dow, calendar description
-12px -- age slider
-*/
-
-/*
-500 -- h2, textfield text, slider display
-400 -- h3, textfield info
-*/

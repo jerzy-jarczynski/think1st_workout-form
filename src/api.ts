@@ -13,14 +13,17 @@ export const fetchHolidays = async (): Promise<Holiday[]> => {
     try {
       const response = await fetch(url, {
         headers: {
-          'X-Api-Key': apiKey
-        }
+          'X-Api-Key': apiKey,
+        },
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      const holidaysWithType = data.map((holiday: Holiday) => ({ ...holiday, type }));
+      const holidaysWithType = data.map((holiday: Holiday) => ({
+        ...holiday,
+        type,
+      }));
       holidays.push(...holidaysWithType);
     } catch (error) {
       console.error(`Error fetching ${type} holidays:`, error);

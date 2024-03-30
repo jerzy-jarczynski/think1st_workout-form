@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from '../../FormContext';
 
 const SubmitButton: React.FC = () => {
-  const [formState, formActions] = useForm(); // Zmieniono destrukturyzację aby otrzymać zarówno stan, jak i akcje z kontekstu
+  const [formState, formActions] = useForm();
   const [buttonStyle, setButtonStyle] = useState({
     backgroundColor: formState.isDateSelected ? '#761BE4' : '#CBB6E5',
     cursor: formState.isDateSelected ? 'pointer' : 'default',
@@ -19,25 +19,32 @@ const SubmitButton: React.FC = () => {
 
   const handleHover = () => {
     if (formState.isDateSelected) {
-      setButtonStyle(prevStyle => ({ ...prevStyle, backgroundColor: '#6A19CD', cursor: 'pointer' }));
+      setButtonStyle((prevStyle) => ({
+        ...prevStyle,
+        backgroundColor: '#6A19CD',
+        cursor: 'pointer',
+      }));
     }
   };
 
   const handleHoverExit = () => {
     if (formState.isDateSelected) {
-      setButtonStyle(prevStyle => ({ ...prevStyle, backgroundColor: '#761BE4', cursor: 'pointer' }));
+      setButtonStyle((prevStyle) => ({
+        ...prevStyle,
+        backgroundColor: '#761BE4',
+        cursor: 'pointer',
+      }));
     }
   };
 
   const handleSubmit = () => {
-    // Sprawdź, czy wszystkie wymagane pola są wypełnione
     const isFormValid =
       formState.firstName.trim() !== '' &&
       formState.lastName.trim() !== '' &&
       formState.email.trim() !== '' &&
       formState.photo.trim() !== '' &&
       formState.isDateSelected &&
-      isValidEmail(formState.email); // Dodatkowa walidacja formatu email
+      isValidEmail(formState.email);
 
     if (isFormValid) {
       console.log('Submitting form data:', {
@@ -56,7 +63,10 @@ const SubmitButton: React.FC = () => {
       formData.append('email', formState.email);
       formData.append('age', formState.age.toString());
       formData.append('photo', formState.photo);
-      formData.append('selectedDay', formState.selectedDay?.toISOString() || '');
+      formData.append(
+        'selectedDay',
+        formState.selectedDay?.toISOString() || ''
+      );
 
       if (formState.selectedTime !== null) {
         formData.append('selectedTime', formState.selectedTime);
@@ -66,22 +76,23 @@ const SubmitButton: React.FC = () => {
         method: 'POST',
         body: formData,
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           console.log('Form data successfully submitted to the server.');
         })
-        .catch(error => {
-          console.error('There was a problem with your fetch operation:', error);
+        .catch((error) => {
+          console.error(
+            'There was a problem with your fetch operation:',
+            error
+          );
         });
     } else {
-      // Ustawiamy flagę informującą PersonalInfoForm o próbie wysłania pustego formularza
-      formActions.setFormSubmitted(true); // Użyjemy funkcji setFormSubmitted z kontekstu
+      formActions.setFormSubmitted(true);
     }
   };
 
-  // Funkcja sprawdzająca poprawność formatu adresu email
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);

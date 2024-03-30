@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from '../../../FormContext';
 
 const TimeSelector: React.FC = () => {
-  const [selectedTime, setSelectedTime] = useState<string>('12:00'); // Ustawienie 12:00 jako domyślnie zaznaczonej godziny
+  const [selectedTime, setSelectedTime] = useState<string>('12:00');
   const [, formActions] = useForm();
 
   const handleTimeChange = (time: string) => {
@@ -15,7 +15,10 @@ const TimeSelector: React.FC = () => {
   return (
     <div className="space-y-2 md:col-start-2 md:col-span-1">
       <h3 className="text-base font-normal pb-2 pt-6 md:pt-0">Time</h3>
-      <div className="grid grid-cols-4 md:grid-cols-1 gap-2" style={{ marginTop: 0 }}>
+      <div
+        className="grid grid-cols-4 md:grid-cols-1 gap-2"
+        style={{ marginTop: 0 }}
+      >
         {timeOptions.map((time) => (
           <label
             key={time}
