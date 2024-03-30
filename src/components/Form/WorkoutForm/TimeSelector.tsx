@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from '../../../FormContext';
 
 const TimeSelector: React.FC = () => {
-  const [selectedTime, setSelectedTime] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('12:00'); // Ustawienie 12:00 jako domyślnie zaznaczonej godziny
   const [, formActions] = useForm();
 
   const handleTimeChange = (time: string) => {

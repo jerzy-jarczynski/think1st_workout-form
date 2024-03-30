@@ -9,23 +9,25 @@ interface AgeSliderProps {
 const AgeSlider: React.FC<AgeSliderProps> = ({ header }) => {
   const [value, setValue] = useState<number>(8);
   const [tooltipPosition, setTooltipPosition] = useState<number>(0);
+  const [prevValue, setPrevValue] = useState<number>(8); // New state variable to store previous value
   const rangeRef = useRef<HTMLInputElement>(null);
   
   // Dodanie hooka useForm
   const [, formActions] = useForm();
 
   useEffect(() => {
-    if (rangeRef.current) {
+    if (rangeRef.current && value !== prevValue) { // Compare value to previous value
       const rangeSliderWidth = rangeRef.current.offsetWidth - 16;
       const rangeSliderStepCount = 100 - 8;
       const singleStepSize = rangeSliderWidth / rangeSliderStepCount;
       const pixelOffset = (value - 8) * singleStepSize + 8;
       setTooltipPosition(pixelOffset);
       
-      // Aktualizacja wartości wieku na podstawie wartości z suwaka
-      formActions.setAge(value); // Ustawienie wieku w formActions
+      // Update the age value only if it has changed
+      formActions.setAge(value);
+      setPrevValue(value); // Update the previous value
     }
-  }, [value, formActions]);
+  }, [value, formActions, prevValue]); // Add prevValue to the dependencies array
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);

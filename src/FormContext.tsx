@@ -34,9 +34,10 @@ const initialFormState: FormState = {
   selectedTime: null,
 };
 
-const FormContext = createContext<[FormState, FormActions]>([
+export const FormContext = createContext<[FormState, FormActions, boolean]>([
   initialFormState,
   {} as FormActions,
+  false,
 ]);
 
 export const useForm = () => useContext(FormContext);
@@ -56,6 +57,15 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setFormState((prevState) => ({ ...prevState, age: value }));
   const setPhoto = (value: string) =>
     setFormState((prevState) => ({ ...prevState, photo: value }));
+  
+  const updateSelectedDay = (value: Date | null) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      selectedDay: value,
+      isDateSelected: value !== null,
+    }));
+  };
+
   const setSelectedDay = (value: Date | null) =>
     setFormState((prevState) => ({
       ...prevState,
@@ -76,13 +86,13 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({
     setEmail,
     setAge,
     handleSubmit,
-    setSelectedDay,
+    setSelectedDay: updateSelectedDay,
     setPhoto,
     setSelectedTime,
   };
 
   return (
-    <FormContext.Provider value={[formState, formActions]}>
+    <FormContext.Provider value={[formState, formActions, formState.isDateSelected]}>
       {children}
     </FormContext.Provider>
   );

@@ -4,16 +4,30 @@ import { Holiday } from '../../../types';
 import TimeSelector from './TimeSelector';
 import { useForm } from '../../../FormContext';
 
-const DateSelector: React.FC = () => {
+interface DateSelectorProps {
+  selectedDay: Date | null;
+  setSelectedDay: React.Dispatch<React.SetStateAction<Date | null>>;
+  showTimeSelector: boolean;
+  setShowTimeSelector: React.Dispatch<React.SetStateAction<boolean>>;
+  inputState: 'default' | 'active' | 'error';
+  setInputState: React.Dispatch<React.SetStateAction<'default' | 'active' | 'error'>>;
+  selectedObservance: string | null;
+  setSelectedObservance: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const DateSelector: React.FC<DateSelectorProps> = ({
+  selectedDay,
+  setSelectedDay,
+  showTimeSelector,
+  setShowTimeSelector,
+  inputState,
+  setInputState,
+  selectedObservance,
+  setSelectedObservance
+}) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
-  const [selectedObservance, setSelectedObservance] = useState<string | null>(null);
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
-  const [showTimeSelector, setShowTimeSelector] = useState<boolean>(false);
-  const [inputState, setInputState] = useState<'default' | 'active' | 'error'>('default');
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Importujemy funkcję useForm z kontekstu
   const [, formActions] = useForm();
 
   useEffect(() => {
@@ -36,7 +50,7 @@ const DateSelector: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setInputState('default'); // Zmiana stanu na 'default' po kliknięciu poza elementem
+        setInputState('default');
       }
     };
 
@@ -45,7 +59,7 @@ const DateSelector: React.FC = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, []);
+  }, [setInputState]);
 
   const isHoliday = (date: Date): boolean => {
     return holidays.some((holiday) => new Date(holiday.date).toDateString() === date.toDateString());
@@ -102,18 +116,19 @@ const DateSelector: React.FC = () => {
       setSelectedDay(null);
       setShowTimeSelector(false);
       setInputState('active');
+      formActions.setSelectedDay(null);
     } else if (!isSunday(day) && !isNational(day)) {
       setSelectedObservance((prevDescription) => prevDescription === description ? null : description);
       setSelectedDay((prevSelectedDay) => {
         if (prevSelectedDay && prevSelectedDay.toDateString() === day.toDateString()) {
           setShowTimeSelector(false);
-          formActions.setSelectedDay(null); // Odznaczenie daty - ustawiamy wybraną datę na null
           setInputState('default');
+          formActions.setSelectedDay(null);
           return null;
         } else {
           setShowTimeSelector(true);
-          formActions.setSelectedDay(day); // Ustawienie wybranej daty
           setInputState('active');
+          formActions.setSelectedDay(day);
           return day;
         }
       });
@@ -122,7 +137,7 @@ const DateSelector: React.FC = () => {
       setSelectedDay(null);
       setShowTimeSelector(false);
       setInputState('default');
-      formActions.setSelectedDay(null); // Odznaczenie daty - ustawiamy wybraną datę na null
+      formActions.setSelectedDay(null);
     }
   };
 

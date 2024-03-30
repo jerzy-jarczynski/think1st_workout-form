@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from '../../FormContext';
 
 const SubmitButton: React.FC = () => {
@@ -8,6 +8,15 @@ const SubmitButton: React.FC = () => {
     cursor: formState.isDateSelected ? 'pointer' : 'default',
     transition: 'background-color 0.3s',
   });
+
+  // Aktualizacja stylu przycisku w zależności od zmiany stanu zaznaczenia daty
+  useEffect(() => {
+    setButtonStyle({
+      backgroundColor: formState.isDateSelected ? '#761BE4' : '#CBB6E5',
+      cursor: formState.isDateSelected ? 'pointer' : 'default',
+      transition: 'background-color 0.3s',
+    });
+  }, [formState.isDateSelected]);
 
   const handleHover = () => {
     if (formState.isDateSelected) {
@@ -29,10 +38,10 @@ const SubmitButton: React.FC = () => {
         email: formState.email,
         age: formState.age,
         photo: formState.photo,
-        date: formState.selectedDay,
-        time: formState.selectedTime,
+        selectedDay: formState.selectedDay,
+        selectedTime: formState.selectedTime,
       });
-  
+
       // Wysyłanie danych na serwer...
       const formData = new FormData();
       formData.append('firstName', formState.firstName);
@@ -40,13 +49,13 @@ const SubmitButton: React.FC = () => {
       formData.append('email', formState.email);
       formData.append('age', formState.age.toString());
       formData.append('photo', formState.photo);
-      formData.append('date', formState.selectedDay?.toISOString() || '');
-  
+      formData.append('selectedDay', formState.selectedDay?.toISOString() || '');
+
       // Dodawanie selectedTime tylko jeśli nie jest null
       if (formState.selectedTime !== null) {
-        formData.append('time', formState.selectedTime);
+        formData.append('selectedTime', formState.selectedTime);
       }
-  
+
       fetch('http://letsworkout.pl/submit', {
         method: 'POST',
         body: formData,
