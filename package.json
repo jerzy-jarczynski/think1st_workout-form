@@ -1,6 +1,5 @@
 {
   "name": "workout-form",
-  "homepage": "https://jerzy-jarczynski.github.io/think1st-workout-form",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
