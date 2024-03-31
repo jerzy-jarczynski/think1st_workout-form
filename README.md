@@ -8,7 +8,7 @@ This is a React project aimed at creating a Workout Form application. The applic
 
 ## Demo
 
-A live demo of the project is available [here](https://b29ed93e-7ff3-49dd-9534-9a6197bb7750-00-3nel7kpvi4r7d.spock.replit.dev/). 
+A live demo of the project is available [here](https://4406ef1c-6c8b-4119-af9e-6e6f492ba3fb-00-2dmeypbue95rf.picard.replit.dev/). 
 
 ## Dependencies 
 
